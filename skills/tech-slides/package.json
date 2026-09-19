@@ -1,0 +1,11 @@
+{
+  "name": "tech-slides-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "tech-slides スキルの描画依存（marp-cli / lucide アイコン）",
+  "dependencies": {
+    "@marp-team/marp-cli": "^4.5.1",
+    "lucide-static": "^1.47.0",
+    "simple-icons": "^16.31.0"
+  }
+}

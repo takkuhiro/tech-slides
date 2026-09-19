@@ -1,0 +1,13 @@
+{
+  "name": "takkuhiro-plugins",
+  "owner": { "name": "takkuhiro" },
+  "description": "個人用プラグインのローカルマーケットプレイス",
+  "plugins": [
+    {
+      "name": "tech-slides",
+      "source": "./",
+      "description": "技術登壇・社内勉強会向けスライドを Marp で作る（構想 slide-plan / 作成 tech-slides / レビュー slide-review）",
+      "version": "0.2.0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "tech-slides",
+  "version": "0.2.0",
+  "description": "技術カンファレンス登壇・社内勉強会・LT のスライドを Marp（Markdown）で作るプラグイン。構想フェーズ（slide-plan：伝えたいことを対話で構成案 <slug>.plan.md に落とす。枚ごとの主張・図解パターン・必要な画像素材まで決める）と、作成フェーズ（tech-slides：構成案から Marp デッキを書き、ロゴ・記事サムネイル・スクリーンショットを収集し、lint と PDF 描画で QA）に分かれる。白／淡いアイボリー背景、1スライド1メッセージ（タイトル→リード文→根拠）、ヘッダー・フッター無し。図解パターン（並列・比較・フロー・サイクル・階層・マトリクス・数式・ビフォーアフター・ランキング・ギャラリー等、原典 39 パターン対応表付き）をテーマ CSS の class として同梱。slide-review で既存デッキのレビューも行う。",
+  "author": {
+    "name": "takkuhiro"
+  },
+  "keywords": [
+    "slides",
+    "marp",
+    "presentation",
+    "tech-talk",
+    "markdown",
+    "design",
+    "outline"
+  ]
+}
