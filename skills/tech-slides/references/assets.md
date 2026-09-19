@@ -39,6 +39,7 @@ bash $S/scripts/fetch_asset.sh "https://example.com/diagram.png"
 bash $S/scripts/screenshot.sh "https://marp.app" marp-site --size 1280x800
 ```
 
+- simple-icons に無い企業（OpenAI・Microsoft・Amazon など。商標の都合で収録されない）は、公式サイトの favicon を `https://www.google.com/s2/favicons?domain=<domain>&sz=128` で取り、`.icon.brand` に `<img>` で入れる。16px しか返らない企業は `icons.duckduckgo.com/ip3/<domain>.ico`（48px）を試し、それでも粗ければ文字にする
 - 取得した画像の出典（サイト名・URL・著者）を `figcaption` か `.note` に必ず書く。引用の範囲で使う
 - ロゴは各社の商標ガイドラインの対象。改変（色変え・変形）せず、そのサービスを指す目的でだけ使う。`--mono` の単色化はガイドラインで許されているものだけ
 - OG 画像が取れないページは `screenshot.sh` でページ全体を撮る。それも駄目ならユーザーに依頼

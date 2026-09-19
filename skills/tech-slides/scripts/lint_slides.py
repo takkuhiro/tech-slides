@@ -11,7 +11,8 @@
   E03 テーマに無い class を使っている               … 描画されず崩れる
   E04 HTML ブロックの途中に空行がある               … Markdown が HTML を分断し、生タグが表示される
   E05 frontmatter の theme: が themes/ に無い       … 描画時に既定テーマへ落ちて見た目が変わる
-  W01 リード文が無い（# の直後に段落が無い）         … 章扉・表紙・メッセージ以外は必須
+  W09 補足文（.note）が長い（70 字超）             … 補足に本文を詰めない。要るなら 1 枚にする、要らなければ話者ノートへ
+  W10 補足文（.note）が本編の半数超の枚にある      … 補足文の常用は「何でも足す」癖のサイン
   W02 リード文が長い（60 字超）                    … 一文で言い切る
   W03 タイトルが長い（30 字超）                    … 2 行に折り返す
   W04 箇条書きが多い（最上位 6 項目以上）／ネスト 3 段以上
@@ -21,6 +22,7 @@
   W08 <p class="lead"> や見出しの直後の段落が 2 文以上（。が 2 つ以上）
   I01 スライド枚数と、話す時間の目安（1 枚 1〜2 分）
   I02 画像に alt が無い
+  I03 リード文が無い（# の直後に段落が無い）         … 図だけで伝わるなら無くてよい。意図して省いたか確認する
 """
 import sys, re, json, argparse, os
 
@@ -117,6 +119,7 @@ def lint(md, theme_css=None):
     if fm.get("paginate", "false").lower() == "true":
         add(ERR, "E02", 0, "paginate: true になっています。ページ番号は描きません")
 
+    note_slides, slides_body_count = [], 0
     for idx, (start, body) in enumerate(slides, 1):
         classes = set()
         for m in re.finditer(r"<!--\s*_?class:\s*([^-]*?)\s*-->", body):
@@ -135,6 +138,8 @@ def lint(md, theme_css=None):
 
         # リード文
         is_special = bool(classes & SPECIAL_CLASSES)
+        if not is_special:
+            slides_body_count += 1
         m = re.search(r"^#\s+.+\n+(?!<(?:div|p|pre|figure|table|ul|ol|img|blockquote|span|h[1-6])\b|<!--|```|[-*]\s|\d+\.\s|\|)(.+)$", nocomment, flags=re.M)
         lead = None
         if m:
@@ -143,7 +148,7 @@ def lint(md, theme_css=None):
         if pm:
             lead = re.sub(r"<[^>]+>", "", pm.group(1)).strip()
         if h1s and not is_special and not lead:
-            add(WARN, "W01", idx, "リード文がありません。# の直後に、この 1 枚で一番伝えたい一文を置きます")
+            add(INFO, "I03", idx, "リード文がありません。図だけで伝わるなら無くてよい（意図して省いたか確認）")
         if lead:
             if len(lead) > 60:
                 add(WARN, "W02", idx, f"リード文が {len(lead)} 字です。60 字以内の一文に")
@@ -184,6 +189,12 @@ def lint(md, theme_css=None):
 
         # 文字量
         vt = visible_text(body)
+        for nm in re.findall(r'<div class="note">(.*?)</div>', nocomment, flags=re.S):
+            nt = re.sub(r"<[^>]+>", "", nm).strip()
+            if len(nt) > 70:
+                add(WARN, "W09", idx, f"補足文が {len(nt)} 字あります。要るなら 1 枚にする、要らなければ話者ノート（HTML コメント）へ")
+        if '<div class="note">' in nocomment and not is_special:
+            note_slides.append(idx)
         if len(vt) > 220:
             add(WARN, "W07", idx, f"本文が約 {len(vt)} 字あります（コード・タグ除く）。220 字を超えると読ませる資料になります")
 
@@ -214,6 +225,8 @@ def lint(md, theme_css=None):
                 add(INFO, "I02", idx, "画像に alt がありません（bg 指定でなければ内容を書きます）")
 
     n = len(slides)
+    if slides_body_count and len(note_slides) > slides_body_count / 2:
+        add(WARN, "W10", 0, f"補足文（.note）が {len(note_slides)}/{slides_body_count} 枚にあります。補足文の常用をやめ、要る情報は枚に、要らない情報は話者ノートへ")
     add(INFO, "I01", 0, f"{n} 枚。話す時間の目安 {n}〜{n*2} 分（1 枚 1〜2 分。LT は 30〜45 秒/枚）")
     return issues
 

@@ -417,3 +417,44 @@ section.overlay h1, section.overlay h1 + p:not(.body) { background: rgba(255, 25
 
 /* 印刷（PDF）用の安定化 */
 @media print { section { break-inside: avoid; } }
+
+/* ---- 2026-09-19 追加: 表紙の強い版と、全体地図（2 領域 × 打ち手）---- */
+/* 表紙・強い版: <!-- _class: ivory title bold -->。強調色の濃い面に白文字。写真を使わずに冒頭にインパクトを出す */
+section.title.bold { background: var(--accent-ink); color: #FAF8F2; position: relative; overflow: hidden; }
+section.title.bold::before { content: ""; position: absolute; right: -180px; top: -220px; width: 720px; height: 720px; border-radius: 50%; background: rgba(255,255,255,.07); }
+section.title.bold::after { content: ""; position: absolute; right: 120px; bottom: -320px; width: 560px; height: 560px; border-radius: 50%; background: rgba(255,255,255,.05); }
+section.title.bold .kicker { position: relative; font-family: var(--font-mono); font-size: 22px; letter-spacing: .06em; color: rgba(255,255,255,.72); margin-bottom: 28px; }
+section.title.bold h1 { position: relative; color: #FFFFFF; font-size: 64px; }
+section.title.bold h1 + p:not(.body) { position: relative; color: rgba(255,255,255,.86); }
+section.title.bold .meta { position: relative; color: rgba(255,255,255,.72); }
+section.title.bold .meta strong { color: #FFFFFF; }
+
+/* 全体地図: .map > .panel(.emph|.muted) > header(.icon + h3 + p) + .item(.icon + div(h4 + p)) */
+.map { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); width: 100%; align-items: stretch; }
+.map .panel { border: 2px solid var(--line); border-radius: var(--radius); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.map .panel > header { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+.map .panel > header .icon { width: 56px; height: 56px; background: var(--accent); color: #FFFFFF; flex: none; }
+.map .panel > header .icon svg { width: 28px; height: 28px; }
+.map .panel > header h3 { font-size: 32px; margin: 0; line-height: 1.2; color: var(--ink); }
+.map .panel > header p { margin: 2px 0 0; font-size: 20px; color: var(--ink-2); }
+.map .item { display: flex; align-items: center; gap: 14px; background: var(--surface); border-radius: 10px; padding: 12px 16px; }
+.map .item .icon { width: 44px; height: 44px; flex: none; background: var(--bg); }
+.map .item .icon svg { width: 22px; height: 22px; }
+.map .item h4 { font-size: 22px; margin: 0 0 2px; color: var(--ink); }
+.map .item p { font-size: 20px; margin: 0; color: var(--ink-2); line-height: 1.4; }
+.map .panel.emph { border-color: var(--accent); background: var(--accent-soft); }
+.map .panel.emph .item { background: var(--bg); }
+.map .panel.muted { opacity: .38; }
+
+/* 2026-09-19 追加: .icon.brand に画像ロゴ（favicon・PNG）を入れる。.card 内で見出しの左に並べるなら .card-head */
+.icon.brand img { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
+.icon.brand.lg img { width: 52px; height: 52px; }
+.card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.card-head .icon { margin: 0; width: 48px; height: 48px; }
+.card-head .icon img { width: 30px; height: 30px; }
+.card-head h3 { margin: 0 !important; }
+.compare .side .card-head h3 { color: inherit; }
+.card-head img.wordmark { height: 22px; width: auto; max-width: 220px; object-fit: contain; }
+.brand-row { display: flex; gap: 12px; align-items: center; margin: 4px 0 12px; }
+.brand-row img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; background: var(--bg); padding: 4px; border: 1px solid var(--line); }
+.brand-row img.wordmark { width: auto; max-width: 200px; height: 36px; }

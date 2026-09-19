@@ -186,6 +186,15 @@ CONE inc.「パワーポイントのデザインパターン大全」の 39 パ�
 </div>
 ```
 
+### A20. 地図（2 領域 × 打ち手） — `.map > .panel > header + .item`
+用途：全体像を 2 つの領域に分け、それぞれの打ち手を 3 つ前後並べる。章の入口で片側を `emph`、他方を `muted` にして「いまここ」を示す再利用ができる。
+```html
+<div class="map">
+  <div class="panel emph"><header><div class="icon">SVG</div><div><h3>領域 A</h3><p>一言</p></div></header><div class="item"><div class="icon">SVG</div><div><h4>打ち手</h4><p>説明 1 行</p></div></div></div>
+  <div class="panel muted"><header>…</header><div class="item">…</div></div>
+</div>
+```
+
 ### A19. ツリー図 — 未実装
 テーマに専用 class は無い。Mermaid で SVG にして画像で貼る（`references/marp-notes.md` 参照）か、A14 レイヤーか A15 入れ子で言い換える。
 
@@ -233,12 +242,13 @@ CONE inc.「パワーポイントのデザインパターン大全」の 39 パ�
 
 | 型 | class | 中身 |
 |---|---|---|
+| 表紙（強い版） | `title bold` | 強調色の濃い面に白文字。`#` タイトル、段落、`.meta`（名前・イベント名は任意。指定がなければ所属だけか無し）。写真なしで冒頭にインパクトを出す |
 | 表紙 | `title` | `#` タイトル（2 行まで）→ 段落でサブタイトル → `<div class="meta"><strong>名前</strong><span>所属</span><span>イベント名</span></div>` |
 | 章扉 | `section` | `<div class="num">01</div>` → `#` 章名 → 段落でその章のねらい |
 | メッセージ | `message` | `#` の一文だけ。補足があれば段落を 1 つ |
 | DEMO | `demo` | `# DEMO` → 段落で見せる内容 |
 | まとめ | （通常） | `# まとめ` → リード文に 1 文の結論 → `.rows` でテイクアウェイ 3 点（最後の 1 点は「明日やること」） |
-| 締め | `end` | `# ありがとうございました` → 段落 → `<div class="links"><div><strong>Slides</strong>URL</div>…</div>` |
+| 締め | `end` | **任意。社内勉強会では作らない**（まとめを表示したまま質疑に入る）。外部登壇で資料 URL・連絡先を示す必要があるときだけ `# ありがとうございました` → 段落 → `.links` |
 
 - 自己紹介は 1 枚・4 項目以内（名前、所属、今の仕事、この話との接点）。`.two` で写真 + 箇条書き
 - 目次（アジェンダ）は 20 分以上の発表だけ。`.rows` の `.num` で 3〜5 項目

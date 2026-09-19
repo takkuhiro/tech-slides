@@ -67,7 +67,9 @@ python3 scripts/lint_slides.py deck.md                    # 機械チェック
 ## Mermaid / D2 を使いたいとき
 
 Marp 本体に Mermaid は無い。次のいずれか：
-1. `npx -y @mermaid-js/mermaid-cli -i fig.mmd -o fig.svg -b transparent -t neutral` で SVG にして `![w:900](fig.svg)`（Chrome を含む依存を初回に取得する）
+1. `npx -y @mermaid-js/mermaid-cli -i fig.mmd -o fig.png -b transparent -s 2 -c mmd-config.json` で **PNG** にして `![w:1000](fig.png)`（Chrome を含む依存を初回に取得する。`~/.npm` の権限エラーが出たら `npm_config_cache=<scratch>/npmcache` を付ける）
+   - SVG は Marp 側の書体で再計測されないため、ノード内の文字が切れる。PNG なら描画時の見た目がそのまま残る
+   - `mmd-config.json` 例：`{"theme":"base","themeVariables":{"fontFamily":"Hiragino Sans, sans-serif","fontSize":"20px","primaryColor":"#F1EEE6","primaryBorderColor":"#D0D7DE","lineColor":"#57606A","edgeLabelBackground":"#FAF8F2"},"flowchart":{"wrappingWidth":320,"padding":18}}`。強調ノードは `classDef` で `fill:#E3F1EC,stroke:#0F6E56` を当てる
 2. テーマの `flow` / `layers` / `nest` / `cycle` で言い換える（多くのアーキテクチャ図はこれで足りる）
 3. Excalidraw で描いて SVG 書き出し
 
