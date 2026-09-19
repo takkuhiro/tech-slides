@@ -77,7 +77,6 @@ skills/tech-slides/
   scripts/screenshot.sh         公開 Web ページのスクリーンショット
 skills/slide-review/SKILL.md    レビュー
 examples/showcase.{md,pdf}      見本（31 枚）と素材
-references/                     参考にした他プラグイン（同梱しない）
 ```
 
 ## 設計メモ

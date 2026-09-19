@@ -3,5 +3,3 @@ node_modules/
 *.pdf
 *.html
 .DS_Store
-# 参考にした他社プラグイン（ロゴ等を含むため管理外）
-references/
