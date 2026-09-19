@@ -6,6 +6,8 @@ class: ivory
 title: <発表タイトル>
 ---
 
+<!-- theme: tech-light（既定）/ tech-dark / editorial / swiss / pop。references/style-catalog.md で選ぶ。class の ivory は tech-light 専用 -->
+
 <!-- _class: ivory title -->
 
 # <発表タイトル：主張が伝わる一文か、名詞句 2 行以内>

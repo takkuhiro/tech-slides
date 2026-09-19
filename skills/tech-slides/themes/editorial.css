@@ -1,0 +1,173 @@
+/* @theme editorial */
+/* @auto-scaling true */
+/*
+  editorial — 雑誌の誌面。明朝の見出し、生成りの紙、二重罫の柱、箱を使わず上罫で区切る。
+  表紙の副題は縦組み。章扉は大きな数字だけ。色は墨と藍の 2 つ。
+  設計思想・ふりかえり・キャリア談など「考え方」を語る発表向け。Markdown は tech-light と完全互換。
+*/
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600&display=swap');
+@import 'tech-light';
+
+section {
+  --bg: #F4EFE3;
+  --ink: #1E1B18;
+  --ink-2: #5A534B;
+  --ink-3: #8F877E;
+  --line: #B9AE9C;
+  --surface: #EAE3D3;
+  --accent: #1F3A5F;
+  --accent-soft: #DDE3EA;
+  --accent-ink: #1F3A5F;
+  --warn: #7A3E1D;
+  --warn-soft: #EEDFCD;
+  --code-bg: #ECE6D7;
+  --radius: 0px;
+  --gap: 40px;
+  --font-sans: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-display: "Shippori Mincho B1", "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  padding: 56px 96px 64px;
+  line-height: 1.8;
+}
+section.ivory { --bg: #F4EFE3; --surface: #EAE3D3; --line: #B9AE9C; --code-bg: #ECE6D7; }
+section.accent-indigo { --accent: #34408F; --accent-soft: #E0E2EF; --accent-ink: #34408F; }
+section.accent-coral  { --accent: #8E3A22; --accent-soft: #EEDFD7; --accent-ink: #8E3A22; }
+section.accent-slate  { --accent: #3A4650; --accent-soft: #E1E4E7; --accent-ink: #3A4650; }
+section.accent-plum   { --accent: #5E2F5A; --accent-soft: #E9DEE8; --accent-ink: #5E2F5A; }
+
+/* 柱：本文スライドの見出しの上に二重罫 */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: 0.03em; line-height: 1.45; }
+h1 { font-size: 42px; padding-top: 18px; border-top: 3px double var(--ink); margin-bottom: 22px; }
+h1 + p:not(.body), p.lead { font-family: var(--font-display); font-weight: 500; font-size: 30px; line-height: 1.7; color: var(--ink); margin-bottom: 48px; }
+h1 + p:not(.body)::first-letter, p.lead::first-letter { color: var(--accent-ink); }
+strong { font-weight: 700; }
+em { color: var(--accent-ink); font-weight: 600; }
+a { border-bottom: 1px solid var(--ink); color: var(--ink); }
+li::marker { color: var(--ink-3); }
+ul, ol { padding-left: 1.1em; }
+hr { border-top: 1px solid var(--ink); }
+
+/* 箱を使わない。並列要素は上罫 1 本で区切る（誌面のコラム） */
+.card, .item { background: transparent; border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 18px 0 0; color: var(--ink-2); }
+.card.soft { background: transparent; border-top: 1px solid var(--line); }
+.card.emph { border: 0; border-top: 4px solid var(--accent); background: transparent; }
+.card.emph h3 { color: var(--accent-ink); }
+.card.dashed { border: 0; border-top: 1px dashed var(--line); }
+.card h3, .item h3, .row h3, .flow .step h3, .compare .side h3, .matrix .cell h3, .thumb h3, .layer h3, .formula .term h3, .cycle .node h3, .timeline .event h3, .profile h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: 0.02em; }
+.icon { width: auto; height: auto; border-radius: 0; background: transparent; color: var(--accent-ink); margin-bottom: 10px; justify-content: start; }
+.icon svg { width: 30px; height: 30px; stroke-width: 1.5; }
+.icon.lg svg { width: 44px; height: 44px; }
+.icon.brand { background: transparent; }
+.card .num, .item .num { font-family: var(--font-display); font-size: 30px; font-weight: 500; color: var(--ink); }
+.rows { gap: 0; }
+.row { border-top: 1px solid var(--line); padding: 20px 0; gap: 28px; }
+.row:first-child { border-top: 1px solid var(--ink); }
+.row .num { font-family: var(--font-display); font-size: 38px; font-weight: 500; color: var(--ink-3); line-height: 1.2; text-align: left; }
+.row.boxed { border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 20px 0; }
+.flow .step { background: transparent; border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 16px 0 0; }
+.flow .step + .step { margin-left: 48px; }
+.flow .step + .step::before { left: -34px; width: 14px; height: 14px; border-width: 1.5px; border-color: var(--ink); }
+.flow .step .num { font-family: var(--font-display); font-weight: 500; color: var(--ink-3); font-size: 24px; }
+.flow .step.emph { background: transparent; outline: 0; border-top: 4px solid var(--accent); }
+.flow .step.emph h3 { color: var(--accent-ink); }
+.flow.vertical .step + .step::before { top: -30px; }
+.compare { grid-template-columns: 1fr 96px 1fr; }
+.compare .side { border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 18px 0 0; }
+.compare .side.muted { background: transparent; border-top-color: var(--line); }
+.compare .side.emph { border: 0; border-top: 4px solid var(--accent); background: transparent; }
+.compare .vs { font-family: var(--font-display); color: var(--ink-3); font-size: 26px; }
+.compare.arrow .vs { font-size: 36px; }
+.compare .side .big { font-family: var(--font-display); font-weight: 500; }
+.stats { gap: 48px; }
+.stat { border-top: 1px solid var(--ink); padding-top: 18px; }
+.stat .value { font-family: var(--font-display); font-weight: 400; font-size: 112px; letter-spacing: -0.02em; line-height: 1; }
+.stat .value small, .stat .value .unit { font-family: var(--font-display); font-weight: 500; font-size: 32px; }
+.stat.emph .value { color: var(--accent-ink); }
+.stats.boxed .stat { border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 18px 0 0; }
+.matrix { gap: 0; }
+.matrix .cell { background: transparent; border: 1px solid var(--line); border-radius: 0; margin: -1px 0 0 -1px; }
+.matrix .cell.emph { background: var(--accent-soft); outline: 0; border-color: var(--accent); z-index: 1; }
+.pyramid { gap: 0; }
+.pyramid .tier { background: transparent; border-top: 1px solid var(--ink); border-radius: 0; font-family: var(--font-display); font-weight: 600; padding: 14px 0; }
+.pyramid .tier.emph { background: transparent; outline: 0; border-top: 4px solid var(--accent); color: var(--accent-ink); }
+.layers { gap: 0; }
+.layer { background: transparent; border-top: 1px solid var(--line); border-radius: 0; padding: 16px 0; }
+.layer:first-child { border-top-color: var(--ink); }
+.layer.emph { background: transparent; outline: 0; border-top: 4px solid var(--accent); }
+.layer.emph h3 { color: var(--accent-ink); }
+.formula .term { background: transparent; border-top: 1px solid var(--ink); border-radius: 0; padding-top: 18px; }
+.formula .term.emph { background: transparent; outline: 0; border-top: 4px solid var(--accent); }
+.formula .op { font-family: var(--font-display); color: var(--ink-3); }
+.cycle::before { border: 1px solid var(--line); }
+.cycle .node { background: var(--bg); border: 1px solid var(--ink); border-radius: 0; }
+.cycle .node.emph { background: var(--accent-soft); outline: 0; border-color: var(--accent); }
+.cycle .center { font-family: var(--font-display); }
+.nest { border: 1px solid var(--line); border-radius: 0; }
+.nest > h3 { font-family: var(--font-display); }
+.nest .inner > .card { border-top: 1px solid var(--ink); }
+.timeline::before { background: var(--ink); height: 1px; top: 41px; }
+.timeline .event::before { width: 12px; height: 12px; border: 1px solid var(--ink); background: var(--ink); top: 2px; }
+.timeline .event.muted::before { background: var(--bg); border-color: var(--ink-3); }
+.timeline .event .time { font-family: var(--font-display); font-weight: 500; color: var(--ink-3); }
+.venn .a { background: color-mix(in srgb, var(--accent) 28%, white); border-color: rgba(30, 27, 24, .25); }
+.venn .b { background: color-mix(in srgb, var(--ink-2) 22%, white); border-color: rgba(30, 27, 24, .25); }
+.venn .a, .venn .b { font-family: var(--font-display); font-weight: 600; }
+.venn .ab { font-family: var(--font-display); }
+table { font-family: var(--font-sans); }
+th { background: transparent; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); font-family: var(--font-display); font-weight: 600; }
+th, td { border-bottom-color: var(--line); padding: 14px 16px; }
+tr:last-child td { border-bottom: 1px solid var(--ink); }
+pre { border: 0; border-left: 3px solid var(--ink); border-radius: 0; background: var(--code-bg); padding: 20px 28px; }
+code { border-radius: 0; background: var(--code-bg); }
+img { border-radius: 0; }
+img.shot, .shot img { box-shadow: none; border: 1px solid var(--line); }
+.gallery figure { background: transparent; border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 16px 0 0; }
+figcaption, .figure .caption, .gallery figcaption { font-family: var(--font-display); letter-spacing: 0.04em; }
+.thumb { border: 0; border-top: 1px solid var(--ink); border-radius: 0; padding: 18px 0 0; }
+.thumbs .thumb { padding: 16px 0 0; }
+.thumb img { border-radius: 0; }
+.chip, .tag { border-radius: 0; background: transparent; border: 1px solid var(--ink-3); color: var(--ink-2); font-weight: 500; padding: 1px 10px; }
+.callout { background: transparent; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); border-radius: 0; padding: 16px 0; }
+.callout.accent { background: transparent; color: var(--accent-ink); border-color: var(--accent); }
+.callout.warn { background: transparent; border-color: var(--warn); }
+.rank .no { font-family: var(--font-display); color: var(--ink-3); }
+.rank .bar { border-radius: 0; height: 18px; background: transparent; border-bottom: 1px solid var(--line); }
+.rank .bar::after { border-radius: 0; background: var(--ink-3); }
+.rank.emph .bar::after { background: var(--accent); }
+.rank .val { font-family: var(--font-display); }
+.profile img, .profile .avatar { border-radius: 0; }
+.profile .avatar { background: var(--surface); color: var(--ink); font-family: var(--font-display); }
+.brands .brand-item span { font-family: var(--font-display); }
+blockquote { border-left: 1px solid var(--ink); padding: 4px 0 4px 28px; font-family: var(--font-display); font-weight: 500; font-size: 32px; line-height: 1.8; }
+.big { font-family: var(--font-display); font-weight: 500; }
+mark, pre.focus mark { background: transparent; color: var(--ink); border-bottom: 2px solid var(--accent); border-radius: 0; padding: 0; }
+pre.focus mark { background: var(--accent-soft); }
+.annotate .pin { border-radius: 0; box-shadow: none; }
+.annotate .box { border-radius: 0; border-width: 2px; }
+
+/* 表紙：上に発行情報の二重罫、左に大きな明朝の題、右に縦組みの副題 */
+section.title { position: relative; justify-content: flex-end; padding: 72px 96px 80px; }
+section.title h1 { font-size: 60px; font-weight: 500; line-height: 1.45; letter-spacing: 0.04em; border-top: 0; padding-top: 0; margin: 0; width: 76%; word-break: auto-phrase; }
+section.title h1 + p:not(.body) {
+  position: absolute; right: 96px; top: 170px; height: 420px; margin: 0;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-family: var(--font-display); font-size: 26px; font-weight: 500; color: var(--ink-2); letter-spacing: 0.12em; line-height: 1.6;
+  border-right: 1px solid var(--ink); padding-right: 22px;
+}
+section.title .meta { order: -1; margin: 0 0 auto; padding-bottom: 16px; border-bottom: 3px double var(--ink); font-family: var(--font-display); font-size: 22px; letter-spacing: 0.06em; }
+section.title .meta strong { font-size: 24px; font-weight: 600; }
+
+/* 章扉：紙の色のまま、大きな章番号と題だけ */
+section.section { background: var(--bg); justify-content: flex-end; padding: 72px 96px 80px; }
+section.section .num { font-family: var(--font-display); font-size: 260px; line-height: .78; font-weight: 400; color: var(--surface); -webkit-text-stroke: 1px var(--line); margin: 0 0 -26px -12px; letter-spacing: -0.04em; }
+section.section h1 { font-size: 56px; font-weight: 500; border-top: 1px solid var(--ink); padding-top: 22px; margin-bottom: 18px; letter-spacing: 0.04em; }
+section.section h1 + p:not(.body) { font-size: 26px; font-weight: 400; color: var(--ink-2); margin: 0; }
+
+section.message { padding: 96px 112px; }
+section.message h1 { border-top: 0; padding-top: 0; font-size: 54px; font-weight: 500; line-height: 1.6; letter-spacing: 0.04em; }
+section.message h1 + p:not(.body) { font-size: 26px; font-weight: 400; color: var(--ink-2); }
+section.quote blockquote { font-size: 42px; line-height: 1.9; }
+section.demo h1 { border-top: 0; font-family: var(--font-display); font-weight: 500; letter-spacing: 0.3em; color: var(--ink); font-size: 72px; }
+section.end { justify-content: flex-end; padding: 72px 96px 80px; }
+section.end h1 { border-top: 0; padding-top: 0; font-size: 52px; font-weight: 500; letter-spacing: 0.06em; }
+section.end .links { border-top: 3px double var(--ink); padding-top: 22px; font-family: var(--font-display); }

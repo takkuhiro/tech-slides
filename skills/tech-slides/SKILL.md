@@ -6,7 +6,9 @@ description: スライドの「作成フェーズ」。構成案（<slug>.plan.m
 # tech-slides — 作成フェーズ
 
 構成案（`<slug>.plan.md`）を Marp の Markdown（`<slug>.md`）にし、描画して QA する。
-**書く内容は構成案、見た目はテーマ `themes/tech-light.css`**が持つ。座標や色を Markdown 側で指定しない。
+**書く内容は構成案、見た目はテーマ（`themes/*.css`）**が持つ。座標や色を Markdown 側で指定しない。
+テーマは 5 つ（`tech-light` 既定 / `tech-dark` / `editorial` / `swiss` / `pop`）。同じ Markdown を `theme:` の差し替えだけで別の雰囲気に描ける。
+「〇〇みたいなデザインで」と言われたら `references/style-catalog.md` の対応表で選び、理由を一文添えて確認する。
 着手前に `references/lessons.md`（過去の指摘と規則）を読む。
 
 ## 入口の判定
@@ -22,15 +24,18 @@ description: スライドの「作成フェーズ」。構成案（<slug>.plan.m
 
 | 項目 | 既定 |
 |---|---|
-| 背景 | 淡いアイボリー（`class: ivory`）。構成案に white とあれば `class:` 行を削る |
+| テーマ | `tech-light`。構成案の「テーマ」欄、またはユーザーの「〜みたいな」を `references/style-catalog.md` で引いて frontmatter の `theme:` に書く。途中で変えるときは Markdown を書き直さず `theme:` だけ変える |
+| 背景 | tech-light のとき淡いアイボリー（`class: ivory`）。構成案に white とあれば `class:` 行を削る。他テーマでは `ivory` は無視される |
 | 強調色 | teal。構成案の指定で `accent-indigo / coral / slate / plum` を `class:` に足す。1 デッキ 1 色 |
 | 1 枚の構成 | `# タイトル` → リード文（主張の一文、`#` の直後の段落が自動でそうなる）→ 根拠の図解。ヘッダー・フッター・ページ番号なし |
-| 出力 | `<slug>.md`（正）、`<slug>.pdf`、`<slug>.html`、`<slug>-preview/sheet-NN.png`、`assets/` |
+| 置き場所 | 構成案の「出力先」＝ `<ws>/<slug>/`。無ければ `bash scripts/workspace.sh new <slug>` で作る（ワークスペース未設定なら 1 度だけユーザーに聞いて `set`）。**カレントディレクトリや `~/develop` 直下に作業ファイルを置かない** |
+| 出力 | `<ws>/<slug>/` の中に `<slug>.md`（正）、`<slug>.pdf`、`<slug>.html`、`<slug>-preview/sheet-NN.png`、`assets/` |
 
 ## 進め方
 
 ### Phase 1 — 構成案を読み、素材を集める
 
+0. 作業ディレクトリを確定する。構成案の「出力先」があればそこ、無ければ `bash "${SKILL_ROOT}/scripts/workspace.sh" new <slug>`。以後のコマンドはすべてこのディレクトリを基準にし、`assets/` もその中に置く。既存デッキの修正はそのデッキのあるディレクトリで行う
 1. 構成案の各枚の「型・タイトル・リード文・根拠・素材」を確認する。構成案に無い枚を勝手に足さない。足したほうがよいと思えば提案して止まる
 2. **素材リストを処理する**（`references/assets.md`）：
    - 「こちらで取得」→ 今取る。ロゴは `node scripts/icon.mjs --brand <slug>`、記事・動画・画像 URL は `bash scripts/fetch_asset.sh <url> <name>`、公開ページの画面は `bash scripts/screenshot.sh <url> <name>`。`assets/` に保存し、構成案の状態を「取得済み」に更新
@@ -40,7 +45,7 @@ description: スライドの「作成フェーズ」。構成案（<slug>.plan.m
 
 ### Phase 2 — Markdown を書く
 
-1. `templates/deck-template.md` を `<slug>.md` にコピーし、構成案の枚を順に埋める。型の HTML は `references/layout-patterns.md`（該当箇所だけ読む）。実例は `templates/showcase.md`
+1. `templates/deck-template.md` を `<slug>.md` にコピーし、frontmatter の `theme:` を構成案どおりにしてから、構成案の枚を順に埋める。型の HTML は `references/layout-patterns.md`（該当箇所だけ読む）。実例は `templates/showcase.md`
 2. **`<div>` の途中に空行を入れない**。HTML の中では Markdown が効かない
 3. 汎用アイコンは `node scripts/icon.mjs <name>`（`--search` で探す）。1 枚 3〜4 個、並列要素の識別にだけ使う
 4. コードは `references/code-slides.md`。8 行以内、1 行 64 字以内、焦点は `pre.focus` + `<mark>`
@@ -54,13 +59,15 @@ description: スライドの「作成フェーズ」。構成案（<slug>.plan.m
 ```bash
 python3 "${SKILL_ROOT}/scripts/lint_slides.py" <slug>.md
 ```
-error（見出し重複・header/footer・未知の class・HTML の分断）を 0 にする。warn は理由を言えるなら残せる。
+error（見出し重複・header/footer・未知の class・HTML の分断・存在しないテーマ名）を 0 にする。lint は frontmatter の `theme:` を見て class を検査する。warn は理由を言えるなら残せる。
 
 ### Phase 4 — 描画して目視する（3 段階）
 
 ```bash
 bash "${SKILL_ROOT}/scripts/build.sh" <slug>.md --png    # PDF + HTML + コンタクトシート + 1 枚ずつの PNG
+bash "${SKILL_ROOT}/scripts/build.sh" <slug>.md --theme swiss --out preview-swiss   # 別テーマで見比べる（Markdown は変えない）
 ```
+テーマを迷っているユーザーには、2〜3 テーマを `--out` で描き分けて `sheet-01.png` を並べて見せる。
 1. **全体**：`<slug>-preview/sheet-NN.png` をすべて開き、流れ・型の偏り・余白の揃いを見る
 2. **原寸**：`<slug>-preview/slide.NNN.png` を **1 枚ずつ全部**開く。コンタクトシートでは見えない崩れ（図形の重なり、折り返し、画像と地の境界、色の沈み）はここでしか見つからない。`references/qa-checklist.md` の項目を順に当てる
 3. **別の目**：作った本人は見たいものを見てしまう。`slide-review` スキルを **Agent ツールで別エージェントとして起動**し、`<slug>.md` と PNG のディレクトリを渡して枚ごとの指摘を受ける。指摘は「直す／理由を付けて残す」のどちらかに必ず振り分ける
@@ -86,6 +93,7 @@ bash "${SKILL_ROOT}/scripts/build.sh" <slug>.md --png    # PDF + HTML + コン�
 ## やらないこと
 
 - 構成案なしに全体を作る（`slide-plan` へ）。構成案に無い枚を黙って足す・削る
+- ワークスペース外（カレントディレクトリ、`~/develop` 直下など）に作業ファイルを置く
 - 画像が根拠になる枚を、素材の確認なしに文字だけで済ませる
 - ヘッダー・フッター・ページ番号・ロゴ・飾り線・意味のない図形を置く
 - 強調色を 2 色以上使う、1 枚に主役（`emph`）を 2 つ置く
@@ -108,7 +116,9 @@ PDF 化と screenshot.sh には Chrome / Chromium / Edge / Brave のいずれか
 
 | パス | 役割 |
 |---|---|
-| `themes/tech-light.css` | テーマ。トークン・スライド型・図解パターン・画像用 class。**見た目の正解はここだけ** |
+| `themes/tech-light.css` | 基底テーマ。トークン・スライド型・図解パターン・画像用 class。**見た目の正解はここだけ** |
+| `themes/tech-dark.css` `editorial.css` `swiss.css` `pop.css` | 派生テーマ。`@import 'tech-light'` で全 class を継承し、トークンと表紙・章扉だけ上書き |
+| `references/style-catalog.md` | テーマの選び方。「〜みたいな」→テーマの対応表、テーマごとの注意、新しいテーマの足し方 |
 | `templates/deck-template.md` | 新規デッキの雛形 |
 | `templates/showcase.md` | 全パターンの実例。型の書き方を確認するときに該当箇所だけ読む |
 | `references/layout-patterns.md` | 図解パターンのカタログ + 原典 39 パターンとの対応表 |
@@ -119,6 +129,7 @@ PDF 化と screenshot.sh には Chrome / Chromium / Edge / Brave のいずれか
 | `references/marp-notes.md` | Marp の記法と落とし穴、画像、PPTX、Mermaid |
 | `references/qa-checklist.md` | 目視 QA のチェックリスト |
 | `references/lessons.md` | ユーザーからの指摘と、仕組みに落とした先。着手前に読む。指摘を受けたら追記する |
+| `scripts/workspace.sh` | スライドの置き場所（ワークスペース）を 1 度だけ保存し、デッキごとのディレクトリを切る。設定は `~/.config/tech-slides/config.json` |
 | `scripts/build.sh` | Markdown → PDF / HTML / PNG / コンタクトシート |
 | `scripts/lint_slides.py` | 機械チェック（E01〜E04 / W01〜W08 / I01〜I02） |
 | `scripts/contact_sheet.py` | PDF → 一覧画像 |

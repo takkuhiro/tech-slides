@@ -8,9 +8,10 @@
 | 前提知識 | <何を知っている人か> |
 | 持ち帰り | <聞き終えた人が明日できること、1 文> |
 | 筋の型 | <Why→What→How / 課題→試行→学び / 概念→例→反例 / 比較→基準→選定> |
-| 背景色 | <ivory（既定）/ white> |
+| テーマ | <tech-light（既定）/ tech-dark / editorial / swiss / pop>（<選んだ理由・ユーザーの言葉>） |
+| 背景色 | <ivory（既定）/ white>（tech-light のみ） |
 | 強調色 | <teal（既定）/ indigo / coral / slate / plum> |
-| 出力先 | <ディレクトリ>/<slug>.md |
+| 出力先 | <ワークスペース>/<slug>/（workspace.sh new <slug> で作成済み） |
 
 ## 構成
 

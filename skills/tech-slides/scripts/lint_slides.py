@@ -10,6 +10,7 @@
   E02 header / footer / paginate:true の指定       … ヘッダー・フッターは入れない
   E03 テーマに無い class を使っている               … 描画されず崩れる
   E04 HTML ブロックの途中に空行がある               … Markdown が HTML を分断し、生タグが表示される
+  E05 frontmatter の theme: が themes/ に無い       … 描画時に既定テーマへ落ちて見た目が変わる
   W01 リード文が無い（# の直後に段落が無い）         … 章扉・表紙・メッセージ以外は必須
   W02 リード文が長い（60 字超）                    … 一文で言い切る
   W03 タイトルが長い（30 字超）                    … 2 行に折り返す
@@ -57,12 +58,35 @@ def split_slides(md: str):
     return fm, slides
 
 
-def theme_classes(path):
+THEME_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "themes")
+
+
+def resolve_theme(md, theme_arg):
+    """--theme が無ければ frontmatter の theme: から themes/<name>.css を引く。既定は tech-light"""
+    if theme_arg:
+        if os.path.exists(theme_arg):
+            return theme_arg
+        return os.path.join(THEME_DIR, theme_arg + ".css")
+    m = re.search(r"^theme:\s*([\w-]+)\s*$", md.split("\n---", 1)[0] if md.startswith("---") else "", flags=re.M)
+    name = m.group(1) if m else "tech-light"
+    return os.path.join(THEME_DIR, name + ".css")
+
+
+def theme_classes(path, _seen=None):
+    """テーマ CSS の class 名を集める。`@import 'name'` で継承しているテーマも辿る"""
     if not path or not os.path.exists(path):
         return None
+    _seen = _seen or set()
+    if path in _seen:
+        return set()
+    _seen.add(path)
     css = open(path, encoding="utf-8").read()
     css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
-    return set(re.findall(r"\.([A-Za-z][\w-]*)", css))
+    classes = set(re.findall(r"\.([A-Za-z][\w-]*)", css))
+    for name in re.findall(r"""@import\s+['"]([\w-]+)['"]""", css):
+        sub = theme_classes(os.path.join(os.path.dirname(path), name + ".css"), _seen)
+        classes |= sub or set()
+    return classes
 
 
 def strip_code(text):
@@ -197,11 +221,15 @@ def lint(md, theme_css=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("md")
-    ap.add_argument("--theme", default=os.path.join(os.path.dirname(__file__), "..", "themes", "tech-light.css"))
+    ap.add_argument("--theme", default=None, help="テーマ名か CSS のパス。省略時は frontmatter の theme:（既定 tech-light）")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
     md = open(a.md, encoding="utf-8").read()
-    issues = lint(md, a.theme)
+    theme = resolve_theme(md, a.theme)
+    if not os.path.exists(theme):
+        print(f"[ERROR] E05 deck  テーマが見つからない: {theme}（themes/ にあるのは " + ", ".join(sorted(f[:-4] for f in os.listdir(THEME_DIR) if f.endswith(".css"))) + "）")
+        sys.exit(1)
+    issues = lint(md, theme)
     if a.json:
         print(json.dumps(issues, ensure_ascii=False, indent=1))
     else:

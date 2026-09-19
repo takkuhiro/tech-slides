@@ -1,0 +1,165 @@
+/* @theme pop */
+/* @auto-scaling true */
+/*
+  pop — 丸ゴシック、大きな角丸、そして多色。桃・ミント・ラベンダー・レモン・空色の
+  5 色が並列要素に順番に当たり、強調（emph）だけ珊瑚色。
+  コミュニティ勉強会・LT・初学者向けの入門など、親しみやすさを前に出したい発表向け。
+  Markdown は tech-light と完全互換（class は同じ。`ivory` は無視される）。
+*/
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=M+PLUS+1+Code:wght@400;500&display=swap');
+@import 'tech-light';
+
+section {
+  --bg: #FFFBF3;
+  --ink: #2B2D42;
+  --ink-2: #5C6070;
+  --ink-3: #9297A6;
+  --line: #EBE3D6;
+  --surface: #FFF4E3;
+  --accent: #F2603D;
+  --accent-soft: #FFE1D6;
+  --accent-ink: #C7401F;
+  --warn: #A16207;
+  --warn-soft: #FFF1B8;
+  --code-bg: #FFF4E3;
+  --radius: 28px;
+  --gap: 28px;
+  --font-sans: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  --font-mono: "M PLUS 1 Code", "JetBrains Mono", Menlo, monospace;
+  /* 5 色パレット（面 / 文字） */
+  --peach: #FFE1D6;    --peach-ink: #B8401F;
+  --mint: #D6F2E4;     --mint-ink: #1D7A55;
+  --lavender: #E6E0FA; --lavender-ink: #5B3FBF;
+  --lemon: #FFF1B8;    --lemon-ink: #8A6500;
+  --sky: #D8ECFC;      --sky-ink: #1C6FA8;
+  --c-bg: var(--peach); --c-ink: var(--peach-ink);
+  font-weight: 500;
+}
+section.ivory { --bg: #FFFBF3; --surface: #FFF4E3; --line: #EBE3D6; --code-bg: #FFF4E3; }
+/* accent-* は emph と見出しの色だけ替える */
+section.accent-indigo { --accent: #5B3FBF; --accent-soft: #E6E0FA; --accent-ink: #4A31A3; }
+section.accent-coral  { --accent: #F2603D; --accent-soft: #FFE1D6; --accent-ink: #C7401F; }
+section.accent-slate  { --accent: #1C6FA8; --accent-soft: #D8ECFC; --accent-ink: #165A88; }
+section.accent-plum   { --accent: #B05AC4; --accent-soft: #F3E1F8; --accent-ink: #8A3E9D; }
+
+h1, h2, h3, h4 { font-weight: 900; letter-spacing: 0.01em; }
+h1 + p:not(.body), p.lead { font-weight: 700; }
+strong { font-weight: 900; }
+em { font-weight: 700; }
+a { border-bottom: 3px solid var(--sky); }
+li::marker { color: var(--accent); }
+
+/* ── 並列要素に 5 色を順番に当てる ── */
+.cols > :nth-child(5n+1), .rows > :nth-child(5n+1), .flow > :nth-child(5n+1), .stats > :nth-child(5n+1), .matrix > .cell:nth-of-type(1), .pyramid > :nth-child(5n+1), .layers > :nth-child(5n+1), .formula > .term:nth-of-type(5n+1), .cycle > :nth-child(5n+1), .timeline > :nth-child(5n+1), .nest .inner > :nth-child(5n+1), .thumbs > :nth-child(5n+1), .gallery > :nth-child(5n+1), .brands > :nth-child(5n+1) { --c-bg: var(--peach); --c-ink: var(--peach-ink); }
+.cols > :nth-child(5n+2), .rows > :nth-child(5n+2), .flow > :nth-child(5n+2), .stats > :nth-child(5n+2), .matrix > .cell:nth-of-type(2), .pyramid > :nth-child(5n+2), .layers > :nth-child(5n+2), .formula > .term:nth-of-type(5n+2), .cycle > :nth-child(5n+2), .timeline > :nth-child(5n+2), .nest .inner > :nth-child(5n+2), .thumbs > :nth-child(5n+2), .gallery > :nth-child(5n+2), .brands > :nth-child(5n+2) { --c-bg: var(--mint); --c-ink: var(--mint-ink); }
+.cols > :nth-child(5n+3), .rows > :nth-child(5n+3), .flow > :nth-child(5n+3), .stats > :nth-child(5n+3), .matrix > .cell:nth-of-type(3), .pyramid > :nth-child(5n+3), .layers > :nth-child(5n+3), .formula > .term:nth-of-type(5n+3), .cycle > :nth-child(5n+3), .timeline > :nth-child(5n+3), .nest .inner > :nth-child(5n+3), .thumbs > :nth-child(5n+3), .gallery > :nth-child(5n+3), .brands > :nth-child(5n+3) { --c-bg: var(--lavender); --c-ink: var(--lavender-ink); }
+.cols > :nth-child(5n+4), .rows > :nth-child(5n+4), .flow > :nth-child(5n+4), .stats > :nth-child(5n+4), .matrix > .cell:nth-of-type(4), .pyramid > :nth-child(5n+4), .layers > :nth-child(5n+4), .formula > .term:nth-of-type(5n+4), .cycle > :nth-child(5n+4), .timeline > :nth-child(5n+4), .nest .inner > :nth-child(5n+4), .thumbs > :nth-child(5n+4), .gallery > :nth-child(5n+4), .brands > :nth-child(5n+4) { --c-bg: var(--lemon); --c-ink: var(--lemon-ink); }
+.cols > :nth-child(5n+5), .rows > :nth-child(5n+5), .flow > :nth-child(5n+5), .stats > :nth-child(5n+5), .pyramid > :nth-child(5n+5), .layers > :nth-child(5n+5), .formula > .term:nth-of-type(5n+5), .cycle > :nth-child(5n+5), .timeline > :nth-child(5n+5), .nest .inner > :nth-child(5n+5), .thumbs > :nth-child(5n+5), .gallery > :nth-child(5n+5), .brands > :nth-child(5n+5) { --c-bg: var(--sky); --c-ink: var(--sky-ink); }
+.compare > .side:first-child { --c-bg: var(--lavender); --c-ink: var(--lavender-ink); }
+.compare > .side:last-child { --c-bg: var(--mint); --c-ink: var(--mint-ink); }
+.two > :first-child { --c-bg: var(--sky); --c-ink: var(--sky-ink); }
+
+/* 面は色、枠線なし。見出しは面の濃色 */
+.card { border: 0; background: var(--c-bg); border-radius: var(--radius); color: var(--ink); padding: 28px 30px; }
+.card h3, .card h4, .item h3 { color: var(--c-ink); }
+.card.soft { background: var(--c-bg); }
+.card.emph { background: var(--accent-soft); box-shadow: 0 0 0 4px var(--accent) inset; }
+.card.emph h3 { color: var(--accent-ink); }
+.card.dashed { background: transparent; border: 3px dashed var(--line); }
+.icon { background: var(--c-ink); color: #FFFFFF; width: 64px; height: 64px; }
+.card.emph .icon { background: var(--accent); }
+.icon.brand { background: #FFFFFF; }
+.icon.plain { background: none; color: var(--c-ink); }
+.card .num, .item .num { color: var(--c-ink); font-family: var(--font-sans); font-weight: 900; }
+.row .num { font-family: var(--font-sans); font-weight: 900; background: var(--c-bg); color: var(--c-ink); border-radius: 50%; width: 56px; height: 56px; line-height: 56px; margin-top: 2px; }
+.row .icon { background: var(--c-bg); color: var(--c-ink); }
+.row h3 { color: var(--c-ink); }
+.row.boxed { border: 0; background: var(--c-bg); }
+.flow .step { background: var(--c-bg); border-radius: 22px; color: var(--ink); }
+.flow .step h3, .flow .step .num { color: var(--c-ink); }
+.flow .step.emph { background: var(--accent-soft); outline: 4px solid var(--accent); }
+.flow .step.emph h3 { color: var(--accent-ink); }
+.flow .step + .step::before { border-color: var(--ink-3); border-width: 4px; }
+.flow .step.plain { background: none; }
+.flow .step.plain .icon { background: var(--c-bg); color: var(--c-ink); }
+.compare .side { border: 0; background: var(--c-bg); color: var(--ink); }
+.compare .side h3 { color: var(--c-ink); }
+.compare .side.muted { background: var(--surface); }
+.compare .side.muted h3 { color: var(--ink-2); }
+.compare .side.emph { background: var(--accent-soft); box-shadow: 0 0 0 4px var(--accent) inset; }
+.compare .side.emph h3 { color: var(--accent-ink); }
+.compare .vs { color: var(--ink-3); font-family: var(--font-sans); font-weight: 900; }
+.stat .value { font-weight: 900; color: var(--c-ink); letter-spacing: -0.01em; }
+.stat.emph .value { color: var(--accent-ink); }
+.stat .delta { color: var(--c-ink); }
+.stats.boxed .stat { border: 0; background: var(--c-bg); }
+.matrix .cell, .pyramid .tier, .layer, .formula .term, .cycle .node { background: var(--c-bg); color: var(--ink); }
+.matrix .cell h3, .layer h3, .formula .term h3, .cycle .node h3 { color: var(--c-ink); }
+.pyramid .tier { color: var(--c-ink); border-radius: 999px; }
+.matrix .cell.emph, .pyramid .tier.emph, .layer.emph, .formula .term.emph, .cycle .node.emph { background: var(--accent-soft); outline: 4px solid var(--accent); }
+.matrix .cell.emph h3, .layer.emph h3, .formula .term.emph h3, .cycle .node.emph h3, .pyramid .tier.emph { color: var(--accent-ink); }
+.layer .chip { background: #FFFFFF; color: var(--c-ink); }
+.cycle::before { border: 8px solid var(--lemon); }
+.cycle .center { color: var(--accent-ink); }
+.formula .op { color: var(--ink-3); }
+.timeline::before { background: var(--lavender); height: 8px; border-radius: 4px; }
+.timeline .event::before { border-color: var(--c-ink); background: var(--c-bg); border-width: 5px; width: 20px; height: 20px; top: -2px; }
+.timeline .event .time { font-family: var(--font-sans); font-weight: 900; color: var(--c-ink); }
+.timeline .event.muted::before { border-color: var(--line); }
+.callout { background: var(--sky); color: var(--ink); }
+.callout.accent { background: var(--accent-soft); }
+.callout.warn { background: var(--lemon); color: var(--lemon-ink); }
+.nest { border: 3px dashed var(--line); }
+.nest .inner > .card { background: var(--c-bg); }
+th { background: var(--lavender); color: var(--lavender-ink); border-bottom: 0; }
+th:first-child { border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
+th:last-child { border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
+th, td { border-bottom-color: var(--line); }
+pre { border: 0; background: var(--code-bg); }
+code { border-radius: 8px; background: var(--lemon); }
+pre code { background: none; }
+.gallery figure { background: var(--c-bg); }
+img.shot, .shot img { border: 0; box-shadow: 0 10px 30px rgba(43, 45, 66, .12); border-radius: 18px; }
+.thumb { border: 0; background: var(--c-bg); }
+.thumb h3 { color: var(--c-ink); }
+.thumbs .thumb { background: var(--c-bg); }
+.chip, .tag { font-weight: 700; background: var(--sky); color: var(--sky-ink); }
+.chip.gray, .tag.gray { background: var(--surface); color: var(--ink-2); }
+.rank .bar { background: var(--surface); border-radius: 999px; height: 28px; }
+.rank .bar::after { border-radius: 999px; background: var(--lavender-ink); }
+.rank.emph .bar::after { background: var(--accent); }
+.rank .no { font-family: var(--font-sans); font-weight: 900; }
+.venn .a { background: color-mix(in srgb, var(--peach-ink) 30%, white); border-color: transparent; }
+.venn .b { background: color-mix(in srgb, var(--sky-ink) 26%, white); border-color: transparent; }
+.venn .ab { color: var(--accent-ink); }
+blockquote { border-left: 8px solid var(--lemon); border-radius: 4px; }
+.profile .avatar { background: var(--mint); color: var(--mint-ink); }
+.brands .brand-item svg { padding: 14px; background: var(--c-bg); border-radius: 24px; box-sizing: content-box; }
+.annotate .pin { background: var(--accent); }
+mark, pre.focus mark { background: var(--lemon); color: var(--ink); }
+
+/* 表紙：色の丸を散らした地に、太い題 */
+section.title { position: relative; overflow: hidden; padding: 96px 112px; background: var(--bg); }
+section.title::before { content: ""; position: absolute; right: -140px; top: -160px; width: 520px; height: 520px; border-radius: 50%; background: var(--peach); }
+section.title::after { content: ""; position: absolute; right: 180px; bottom: -220px; width: 420px; height: 420px; border-radius: 50%; background: var(--mint); }
+section.title > * { position: relative; z-index: 1; }
+section.title h1 { font-size: 64px; }
+section.title h1 + p:not(.body) { color: var(--ink-2); font-weight: 700; }
+section.title .meta::before { content: ""; display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: var(--lavender-ink); margin-right: 4px; align-self: center; }
+
+/* 章扉：ラベンダーの面に、レモンの丸で章番号 */
+section.section { background: var(--lavender); position: relative; overflow: hidden; }
+section.section::after { content: ""; position: absolute; right: -120px; bottom: -120px; width: 360px; height: 360px; border-radius: 50%; background: var(--lemon); }
+section.section > * { position: relative; z-index: 1; }
+section.section .num { font-family: var(--font-sans); font-weight: 900; background: var(--lavender-ink); color: #FFFFFF; display: inline-grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; font-size: 30px; margin-bottom: 26px; }
+section.section h1 { font-size: 56px; color: var(--ink); }
+section.section h1 + p:not(.body) { color: var(--lavender-ink); font-weight: 700; }
+
+section.message h1 { font-size: 56px; }
+section.message h1 + p:not(.body) { color: var(--sky-ink); font-weight: 700; }
+section.demo h1 { font-family: var(--font-sans); font-weight: 900; color: var(--accent-ink); letter-spacing: 0.04em; }
+section.quote blockquote { border-left: 0; }
+section.end { background: var(--mint); position: relative; overflow: hidden; }
+section.end::before { content: ""; position: absolute; left: -160px; bottom: -200px; width: 460px; height: 460px; border-radius: 50%; background: var(--sky); }
+section.end > * { position: relative; z-index: 1; }
+section.end h1 + p:not(.body) { color: var(--mint-ink); }

@@ -1,0 +1,73 @@
+/* @theme tech-dark */
+/* @auto-scaling true */
+/*
+  tech-dark — tech-light の暗色版。開発者カンファレンスの夜のセッション、
+  コードやターミナルが主役の発表向け。墨に近い紺の地に、ミントの強調色。
+  Markdown は tech-light と完全互換（class は同じ。`ivory` は無視される）。
+*/
+@import 'tech-light';
+
+section {
+  --bg: #0E1217;
+  --ink: #E6EDF3;
+  --ink-2: #A9B4BF;
+  --ink-3: #7C8793;
+  --line: #2A323C;
+  --surface: #171D25;
+  --accent: #2DD4BF;
+  --accent-soft: #10312E;
+  --accent-ink: #5EEAD4;
+  --warn: #FDBA74;
+  --warn-soft: #3A2412;
+  --code-bg: #161B22;
+}
+/* `class: ivory` を付けたままでも地は変えない（tech-light 用 Markdown の互換） */
+section.ivory { --bg: #0E1217; --surface: #171D25; --line: #2A323C; --code-bg: #161B22; }
+section.accent-indigo { --accent: #818CF8; --accent-soft: #1E2148; --accent-ink: #A5B4FC; }
+section.accent-coral  { --accent: #FB923C; --accent-soft: #3B2314; --accent-ink: #FDBA74; }
+section.accent-slate  { --accent: #94A3B8; --accent-soft: #232B36; --accent-ink: #CBD5E1; }
+section.accent-plum   { --accent: #C084FC; --accent-soft: #321C45; --accent-ink: #D8B4FE; }
+
+h1, h2, h3, h4 { color: var(--ink); }
+h1 { letter-spacing: 0.01em; }
+strong { color: #FFFFFF; }
+a { border-bottom-color: var(--accent-soft); }
+
+/* コード：常に暗色のハイライト */
+code { background: var(--surface); color: var(--ink); }
+pre { background: var(--code-bg); border-color: var(--line); }
+section.terminal pre, pre.terminal, .terminal pre { background: #05070A; border-color: #05070A; }
+.hljs-comment, .hljs-quote { color: #8B949E; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-type, .hljs-literal, .hljs-doctag, .hljs-meta { color: #FF7B72; }
+.hljs-string, .hljs-regexp, .hljs-attr, .hljs-symbol, .hljs-bullet, .hljs-addition { color: #A5D6FF; }
+.hljs-title, .hljs-function .hljs-title, .hljs-section, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #D2A8FF; }
+.hljs-number, .hljs-variable, .hljs-template-variable, .hljs-attribute { color: #79C0FF; }
+.hljs-deletion { color: #FFA198; background: #4A1C1C; }
+.hljs-addition { background: #1B4332; }
+pre.focus code { color: var(--ink-3); }
+pre.focus mark, mark { background: var(--accent-soft); color: #FFFFFF; }
+
+/* 面と枠 */
+.card { background: var(--surface); border-color: var(--line); }
+.card.soft { background: #1C232C; }
+th { background: var(--surface); }
+img.shot, .shot img { border-color: var(--line); box-shadow: 0 12px 36px rgba(0, 0, 0, .5); }
+.gallery figure { background: var(--surface); }
+.flow .step + .step::before { border-color: var(--ink-3); }
+.venn .a { background: color-mix(in srgb, var(--accent) 34%, var(--bg)); border-color: rgba(230, 237, 243, .16); mix-blend-mode: screen; }
+.venn .b { background: color-mix(in srgb, var(--ink-2) 40%, var(--bg)); border-color: rgba(230, 237, 243, .16); mix-blend-mode: screen; }
+.venn .ab { color: #FFFFFF; }
+.rank .bar::after { background: var(--ink-3); }
+.annotate .pin { color: #0E1217; box-shadow: 0 0 0 4px rgba(14, 18, 23, .9); }
+section.overlay h1, section.overlay h1 + p:not(.body) { background: rgba(14, 18, 23, .85); }
+.callout.warn { color: var(--warn); }
+
+/* スライド型 */
+section.title { background: linear-gradient(160deg, #0E1217 0%, #0F1A1F 100%); }
+section.title h1 { color: #FFFFFF; }
+section.title h1 + p:not(.body) { color: var(--accent-ink); }
+section.title .meta strong { color: #FFFFFF; }
+section.section { background: var(--accent-soft); }
+section.section h1 { color: #FFFFFF; }
+section.section h1 + p:not(.body) { color: var(--ink-2); }
+section.demo h1 { color: var(--accent-ink); }

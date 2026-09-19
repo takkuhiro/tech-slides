@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # build.sh — Marp Markdown を PDF / HTML（/ PNG）に変換し、確認用のコンタクトシートを作る
 #
-#   使い方:  scripts/build.sh deck.md [--png] [--no-sheet] [--theme path/to/theme.css]
-#   出力:    deck.pdf, deck.html（同じディレクトリ）
+#   使い方:  scripts/build.sh deck.md [--png] [--no-sheet] [--theme <name|path.css>] [--out <dir>]
+#   出力:    deck.pdf, deck.html（同じディレクトリ。--out で別ディレクトリに）
+#   テーマ:  themes/ 配下の全 CSS を読み込む。使うテーマは frontmatter の theme: で選ぶ
+#            （tech-light / tech-dark / editorial / swiss / pop）。--theme <name> で一時的に差し替え、
+#            --theme path.css で themes/ 外の CSS を追加できる
 #            deck-preview/sheet-*.png（全ページの一覧。目視 QA 用）
 #            --png を付けると deck-preview/slide-NNN.png（1枚ずつ）も出す
 #
@@ -12,21 +15,23 @@ set -euo pipefail
 
 SKILL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MARP="$SKILL_ROOT/node_modules/@marp-team/marp-cli/marp-cli.js"
-THEME="$SKILL_ROOT/themes/tech-light.css"
+THEME_DIR="$SKILL_ROOT/themes"
+THEME_OVERRIDE=""; EXTRA_THEME=""; OUT=""
 PNG=0; SHEET=1; INPUT=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --png) PNG=1 ;;
     --no-sheet) SHEET=0 ;;
-    --theme) THEME="$2"; shift ;;
-    -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
+    --theme) if [ -f "$2" ]; then EXTRA_THEME="$2"; else THEME_OVERRIDE="$2"; fi; shift ;;
+    --out) OUT="$2"; shift ;;
+    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
     *) INPUT="$1" ;;
   esac
   shift
 done
 
-[ -n "$INPUT" ] || { echo "usage: build.sh deck.md [--png] [--no-sheet] [--theme theme.css]" >&2; exit 2; }
+[ -n "$INPUT" ] || { echo "usage: build.sh deck.md [--png] [--no-sheet] [--theme name|theme.css] [--out dir]" >&2; exit 2; }
 [ -f "$INPUT" ] || { echo "not found: $INPUT" >&2; exit 2; }
 if [ ! -f "$MARP" ]; then
   echo "marp-cli が見つかりません。次を実行してください: (cd \"$SKILL_ROOT\" && npm install)" >&2
@@ -43,13 +48,16 @@ if [ -z "${CHROME_PATH:-}" ]; then
   done
 fi
 
-DIR="$(cd "$(dirname "$INPUT")" && pwd)"
+SRC_DIR="$(cd "$(dirname "$INPUT")" && pwd)"
 BASE="$(basename "${INPUT%.*}")"
-MD="$DIR/$BASE.md"
+MD="$SRC_DIR/$BASE.md"
+if [ -n "$OUT" ]; then mkdir -p "$OUT"; DIR="$(cd "$OUT" && pwd)"; else DIR="$SRC_DIR"; fi
 PREVIEW="$DIR/$BASE-preview"
 
 # 入力ファイルを先に置くこと。--theme-set は配列オプションなので、後ろに置いた入力を飲み込む
-COMMON=(--html --allow-local-files --theme-set "$THEME" --browser-timeout 60)
+COMMON=(--html --allow-local-files --theme-set "$THEME_DIR" --browser-timeout 60)
+if [ -n "$EXTRA_THEME" ]; then COMMON+=(--theme-set "$EXTRA_THEME"); fi
+if [ -n "$THEME_OVERRIDE" ]; then COMMON+=(--theme "$THEME_OVERRIDE"); fi
 # marp-cli v4 は CHROME_PATH を見ない。自動探索が稀に固まるので、見つかっていれば明示する
 if [ -n "${CHROME_PATH:-}" ]; then COMMON+=(--browser chrome --browser-path "$CHROME_PATH"); fi
 

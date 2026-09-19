@@ -2,7 +2,8 @@
 
 技術カンファレンス登壇・社内勉強会・LT のスライドを Marp（Markdown）で作る Claude Code プラグイン。
 
-- 白／淡いアイボリーの明るい背景、1 スライド 1 メッセージ、ヘッダー・フッター無し
+- 1 スライド 1 メッセージ、ヘッダー・フッター無し
+- 見た目は 5 テーマから選ぶ。同じ Markdown を `theme:` の差し替えだけで別の雰囲気に描ける。「〇〇みたいなデザインで」と頼めば対応表で選ぶ（`skills/tech-slides/references/style-catalog.md`）
 - 各ページは「タイトル → リード文（一番伝えたい一文）→ 根拠の図解」で組む
 - 図解パターン（並列・比較・フロー・サイクル・階層・マトリクス・数式・ビフォーアフター・数値・タイムライン等）をテーマ CSS の class として同梱
 - Markdown の機械チェック（lint）→ PDF 描画 → コンタクトシートで目視、まで一気通貫
@@ -14,6 +15,22 @@
 | `slide-review` | — | 「スライドをレビューして」 | 既存デッキ（md / pdf / pptx）を初見の聴衆として指摘 |
 
 構想フェーズの成果物は Markdown 1 ファイルだけ。作成フェーズはそれを読んで作る。構成が無い状態で「作って」と言われた場合は構想フェーズに戻る。
+
+作業ファイルは、初回に 1 度だけ聞く**ワークスペース**（例 `~/develop/slides`）の下に、デッキごとのディレクトリ `<slug>/` を切って置く（`<slug>.plan.md`、`<slug>.md`、PDF、`assets/`）。設定は `~/.config/tech-slides/config.json` に残る。
+
+## テーマ
+
+| テーマ | 雰囲気 | 向く発表 |
+|---|---|---|
+| `tech-light`（既定） | 明るいアイボリー / 白、teal、ゴシック | カンファレンス・社内勉強会の標準 |
+| `tech-dark` | 墨に近い紺、ミント | ライブコーディング、ターミナル主体、暗い会場 |
+| `editorial` | 生成りの紙、明朝、箱を使わず罫で組む誌面 | 設計思想・ふりかえりなど言葉が主役の回 |
+| `swiss` | 白地に黒の太い罫と活字、赤、非対称グリッド | プロダクト発表、キーノート、数字を大きく |
+| `pop` | 丸ゴシック、大きな角丸、5 色のパステル | コミュニティ LT、入門、ハンズオン |
+
+![5 テーマの比較](examples/styles/compare.png)
+
+見本は `examples/styles/<テーマ>/`（`bash skills/tech-slides/scripts/build.sh examples/showcase.md --theme <テーマ> --out examples/styles/<テーマ> --png` で再生成）。
 
 ## セットアップ
 
@@ -40,7 +57,9 @@ PDF 化には Chrome / Chromium / Edge / Brave のいずれかが必要（macOS 
 S=skills/tech-slides
 cp $S/templates/deck-template.md talk.md          # 雛形
 python3 $S/scripts/lint_slides.py talk.md           # 機械チェック
+bash $S/scripts/workspace.sh set ~/develop/slides   # 置き場所（初回だけ）。get / new <slug> / list
 bash $S/scripts/build.sh talk.md                    # talk.pdf / talk.html / talk-preview/sheet-NN.png
+bash $S/scripts/build.sh talk.md --theme swiss --out preview-swiss   # 別テーマで見比べる
 bash $S/scripts/build.sh $S/templates/showcase.md   # 全パターンの見本を描く
 node $S/scripts/icon.mjs --search cache             # 汎用アイコンを探す（Lucide）
 node $S/scripts/icon.mjs --brand github docker      # ツールのロゴ（simple-icons、ブランド色）
@@ -59,9 +78,11 @@ skills/slide-plan/
   templates/plan-template.md    構成案の形式
 skills/tech-slides/
   SKILL.md                      作成フェーズ（Phase 1〜5）
-  themes/tech-light.css         テーマ。トークン・スライド型・図解パターン
+  themes/tech-light.css         基底テーマ。トークン・スライド型・図解パターン
+  themes/{tech-dark,editorial,swiss,pop}.css  派生テーマ（tech-light を @import して上書き）
   templates/deck-template.md    雛形
   templates/showcase.md         全パターンの実例（31 枚）
+  references/style-catalog.md       テーマの選び方。「〜みたいな」→テーマの対応表、新テーマの足し方
   references/design-principles.md   数値付きデザイン原則
   references/layout-patterns.md     図解パターンカタログ（HTML スニペット）+ 原典 39 パターン対応表
   references/assets.md              画像・ロゴ・サムネイルの要否判断、取得手順、ユーザーへの依頼の書き方
@@ -69,6 +90,7 @@ skills/tech-slides/
   references/code-slides.md         コードの見せ方
   references/marp-notes.md          Marp の記法・落とし穴・PPTX・Mermaid
   references/qa-checklist.md        目視 QA
+  scripts/workspace.sh          置き場所の保存とデッキごとのディレクトリ作成
   scripts/build.sh              md → pdf / html / png / コンタクトシート
   scripts/lint_slides.py        機械チェック
   scripts/contact_sheet.py      pdf → 一覧画像
@@ -77,6 +99,7 @@ skills/tech-slides/
   scripts/screenshot.sh         公開 Web ページのスクリーンショット
 skills/slide-review/SKILL.md    レビュー
 examples/showcase.{md,pdf}      見本（31 枚）と素材
+examples/styles/<テーマ>/         同じ見本を各テーマで描いたもの。compare.png は 5 テーマの比較
 ```
 
 ## 設計メモ
