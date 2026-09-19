@@ -107,3 +107,7 @@ examples/styles/<テーマ>/         同じ見本を各テーマで描いたも�
 - **Marp を選んだ理由**：技術資料の核であるコードブロックとダイアグラムをネイティブに扱え、Markdown は後から手で直しやすく、Git で差分が見える。図解は `--html` を有効にしてテーマの class で組む。PDF は Chrome で描くので CSS の表現力がそのまま使える
 - **PPTX は主目的にしない**：登壇資料は PDF（Speaker Deck / Docswell）が主。必要なら画像 PPTX（`--pptx`）か、Anthropic の `pptx` スキルで作り直す
 - **参考にしたもの**：CONE inc.「パワーポイントのデザインパターン大全」（39 パターン）、Assertion-Evidence 構造、Presentation Zen、伝わるデザイン、speaking.io、Anthropic 公式 pptx スキルの QA 手順、社内で使っているスライド生成スキルの「生成 → 機械監査 → 目視」の流れ
+
+## ライセンス
+
+MIT License。`LICENSE` を参照。`examples/assets/` の画像は本リポジトリ用に作ったダミー。
